@@ -11,6 +11,7 @@
 %   [systemfont]     - Use your system sans-serif, no fontspec
 %   [slidenumbers]   - Show minimal slide numbers in bottom-right
 %   [darktext]       - Use #1a1a1a instead of pure black (softer on eyes)
+%   [darkmode]       - Dark background with light text
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{beamerthememinimal}[2026/03/16 Minimal Theme]
@@ -24,12 +25,14 @@
 \newif\if@m@systemfont  \@m@systemfontfalse
 \newif\if@m@slidenumbers\@m@slidenumbersfalse
 \newif\if@m@darktext    \@m@darktextfalse
+\newif\if@m@darkmode    \@m@darkmodefalse
 
 \DeclareOption{inter}{\@m@intertrue\@m@helveticafalse\@m@systemfontfalse}
 \DeclareOption{helvetica}{\@m@helveticatrue\@m@interfalse\@m@systemfontfalse}
 \DeclareOption{systemfont}{\@m@systemfonttrue\@m@interfalse\@m@helveticafalse}
 \DeclareOption{slidenumbers}{\@m@slidenumberstrue}
 \DeclareOption{darktext}{\@m@darktexttrue}
+\DeclareOption{darkmode}{\@m@darkmodetrue}
 
 \ProcessOptions\relax
 
@@ -64,24 +67,37 @@
 
 \RequirePackage{xcolor}
 
-\if@m@darktext
-  \definecolor{m@text}{HTML}{1A1A1A}
+\if@m@darkmode
+  \definecolor{m@text}{HTML}{F0F0F0}
+  \definecolor{m@bg}{HTML}{1A1A1A}
+  \definecolor{m@gray}{HTML}{AAAAAA}
+  \definecolor{m@link}{HTML}{4DA3FF}
+  % Pastel palette (slightly muted for dark backgrounds)
+  \definecolor{m@blue}{HTML}{6BA3C7}
+  \definecolor{m@orange}{HTML}{D4A86A}
+  \definecolor{m@green}{HTML}{7DBF80}
+  \definecolor{m@purple}{HTML}{A68BBF}
+  \definecolor{m@pink}{HTML}{C98E8E}
+  \definecolor{m@yellow}{HTML}{D4CC7A}
 \else
-  \definecolor{m@text}{HTML}{000000}
+  \if@m@darktext
+    \definecolor{m@text}{HTML}{1A1A1A}
+  \else
+    \definecolor{m@text}{HTML}{000000}
+  \fi
+  \definecolor{m@bg}{HTML}{FFFFFF}
+  \definecolor{m@gray}{HTML}{888888}
+  \definecolor{m@link}{HTML}{0071E3}
+  % Pastel palette for diagrams
+  \definecolor{m@blue}{HTML}{ADD8E6}
+  \definecolor{m@orange}{HTML}{FFD599}
+  \definecolor{m@green}{HTML}{B7DFB9}
+  \definecolor{m@purple}{HTML}{C8B4DC}
+  \definecolor{m@pink}{HTML}{F2C4C4}
+  \definecolor{m@yellow}{HTML}{FFF2B3}
 \fi
 
-\definecolor{m@gray}{HTML}{888888}
-\definecolor{m@link}{HTML}{0071E3}  % Apple-style blue for hyperlinks
-
-% Pastel palette for diagrams (matching the screenshot)
-\definecolor{m@blue}{HTML}{ADD8E6}
-\definecolor{m@orange}{HTML}{FFD599}
-\definecolor{m@green}{HTML}{B7DFB9}
-\definecolor{m@purple}{HTML}{C8B4DC}
-\definecolor{m@pink}{HTML}{F2C4C4}
-\definecolor{m@yellow}{HTML}{FFF2B3}
-
-\setbeamercolor{normal text}{fg=m@text, bg=white}
+\setbeamercolor{normal text}{fg=m@text, bg=m@bg}
 \setbeamercolor{frametitle}{fg=m@text}
 \setbeamercolor{framesubtitle}{fg=m@text}
 \setbeamercolor{title}{fg=m@text}
@@ -92,13 +108,13 @@
 \setbeamercolor{footline}{fg=m@gray}
 \setbeamercolor{structure}{fg=m@text}
 
-% Itemize bullets: simple, dark
+% Itemize bullets
 \setbeamercolor{item}{fg=m@text}
 \setbeamercolor{subitem}{fg=m@gray}
 
 % Block environments
-\setbeamercolor{block title}{fg=m@text, bg=white}
-\setbeamercolor{block body}{fg=m@text, bg=white}
+\setbeamercolor{block title}{fg=m@text, bg=m@bg}
+\setbeamercolor{block body}{fg=m@text, bg=m@bg}
 
 % Links
 \hypersetup{colorlinks=true, linkcolor=m@text, urlcolor=m@link}

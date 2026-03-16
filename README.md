@@ -1,8 +1,10 @@
 # Minimal Beamer Theme
 
-A clean, Keynote-inspired Beamer theme with bold headings, no navigation chrome, and a white background.
+A clean, Keynote-inspired Beamer theme with bold headings, no navigation chrome, and light/dark modes.
 
-![Example slide](.github/screenshot.png)
+| Light | Dark |
+| ----- | ---- |
+| ![Light mode](.github/screenshot.png) | ![Dark mode](.github/screenshot-dark.png) |
 
 ## Usage
 
@@ -22,6 +24,7 @@ Compile with **XeLaTeX** or **LuaLaTeX** for font support.
 | `systemfont`   | Use system sans-serif, no fontspec                 |
 | `slidenumbers` | Show slide numbers in the bottom-right             |
 | `darktext`     | Use `#1a1a1a` instead of pure black                |
+| `darkmode`     | Dark background with light text                    |
 
 Options can be combined:
 
@@ -47,10 +50,11 @@ The theme provides a pastel palette for diagrams:
 
 ## Example
 
-See `example.tex` for a working presentation. Build with:
+See `example.tex` and `example-dark.tex` for working presentations. Build with:
 
 ```sh
 latexmk -xelatex example.tex
+latexmk -xelatex example-dark.tex
 ```
 
 ## License

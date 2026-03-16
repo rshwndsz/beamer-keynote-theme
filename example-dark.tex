@@ -1,8 +1,6 @@
 % Example: compile with xelatex or lualatex
 \documentclass[12pt, aspectratio=169]{beamer}
-\usetheme[helvetica]{minimal}
-% Options: [inter], [helvetica], [systemfont], [slidenumbers], [darktext], [darkmode]
-% e.g. \usetheme[helvetica, slidenumbers, darkmode]{minimal}
+\usetheme[helvetica, darkmode]{minimal}
 
 \usepackage{amsmath}
 
@@ -25,8 +23,6 @@
   \]
 
   \vskip1em
-  % Your diagram PNG goes here:
-  % \includegraphics[width=\textwidth]{kv-cache-diagram.png}
 
   Key insight: during autoregressive generation, we only need the
   query vector for the \emph{new} token. The $K$ and $V$ vectors for
@@ -43,7 +39,7 @@
 \end{frame}
 
 \begin{frame}{Diagram colours}
-  The theme provides pastel colours matching the screenshot style:
+  The theme provides muted colours for dark backgrounds:
 
   \vskip1em
   \centering
