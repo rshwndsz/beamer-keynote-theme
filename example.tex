@@ -1,0 +1,60 @@
+% Example: compile with xelatex or lualatex
+\documentclass[12pt, aspectratio=169]{beamer}
+\usetheme[helvetica]{minimal}
+% Options: [inter], [helvetica], [systemfont], [slidenumbers], [darktext]
+% e.g. \usetheme[helvetica, slidenumbers]{minimal}
+
+\usepackage{amsmath}
+
+\title{Speeding up Inference}
+\subtitle{KV Cache and Speculative Decoding}
+\author{Russel}
+\institute{University of Birmingham}
+\date{March 2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Speeding up Inference}{KV Cache}
+  The standard attention computation:
+  \[
+    \text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^T}{\sqrt{d_k}}\right) V
+  \]
+
+  \vskip1em
+  % Your diagram PNG goes here:
+  % \includegraphics[width=\textwidth]{kv-cache-diagram.png}
+
+  Key insight: during autoregressive generation, we only need the
+  query vector for the \emph{new} token. The K and V vectors for
+  all previous tokens can be cached and reused.
+\end{frame}
+
+\begin{frame}{Speeding up Inference}{Speculative Decoding}
+  \begin{itemize}
+    \item Use a smaller draft model to generate $k$ candidate tokens
+    \item Verify all $k$ tokens in a single forward pass of the large model
+    \item Accept prefix of tokens that match; reject and resample the rest
+    \item Expected speedup: $\sim 2\text{--}3\times$ with no quality loss
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Diagram colours}
+  The theme provides pastel colours matching the screenshot style:
+
+  \vskip1em
+  \centering
+  \begin{tabular}{ll}
+    \texttt{m@blue}   & \colorbox{m@blue}{\hspace{3em}} \\[0.4em]
+    \texttt{m@orange} & \colorbox{m@orange}{\hspace{3em}} \\[0.4em]
+    \texttt{m@green}  & \colorbox{m@green}{\hspace{3em}} \\[0.4em]
+    \texttt{m@purple} & \colorbox{m@purple}{\hspace{3em}} \\[0.4em]
+    \texttt{m@pink}   & \colorbox{m@pink}{\hspace{3em}} \\[0.4em]
+    \texttt{m@yellow} & \colorbox{m@yellow}{\hspace{3em}} \\
+  \end{tabular}
+\end{frame}
+
+\end{document}

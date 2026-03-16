@@ -1,0 +1,229 @@
+% beamerthememinimal.sty
+% A minimal Beamer theme emulating a white/clean aesthetic.
+% Compile with XeLaTeX or LuaLaTeX for font support.
+%
+% Usage:
+%   \usetheme{minimal}
+%
+% Options:
+%   [inter]          - Use Inter font (default, open-source SF Pro substitute)
+%   [helvetica]      - Use Helvetica Neue (macOS only)
+%   [systemfont]     - Use your system sans-serif, no fontspec
+%   [slidenumbers]   - Show minimal slide numbers in bottom-right
+%   [darktext]       - Use #1a1a1a instead of pure black (softer on eyes)
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthememinimal}[2026/03/16 Minimal Theme]
+
+% -------------------------------------------------------------------------
+% Option handling
+% -------------------------------------------------------------------------
+
+\newif\if@m@inter       \@m@intertrue
+\newif\if@m@helvetica   \@m@helveticafalse
+\newif\if@m@systemfont  \@m@systemfontfalse
+\newif\if@m@slidenumbers\@m@slidenumbersfalse
+\newif\if@m@darktext    \@m@darktextfalse
+
+\DeclareOption{inter}{\@m@intertrue\@m@helveticafalse\@m@systemfontfalse}
+\DeclareOption{helvetica}{\@m@helveticatrue\@m@interfalse\@m@systemfontfalse}
+\DeclareOption{systemfont}{\@m@systemfonttrue\@m@interfalse\@m@helveticafalse}
+\DeclareOption{slidenumbers}{\@m@slidenumberstrue}
+\DeclareOption{darktext}{\@m@darktexttrue}
+
+\ProcessOptions\relax
+
+% -------------------------------------------------------------------------
+% Base theme: strip everything
+% -------------------------------------------------------------------------
+
+\usetheme{default}
+\usecolortheme{default}
+\useinnertheme{default}
+\useoutertheme{default}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{frametitle continuation}{}
+
+% Footline: either empty or minimal page numbers
+\if@m@slidenumbers
+  \setbeamertemplate{footline}{%
+    \hfill%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \insertframenumber\kern1.5em\vskip1.2em%
+  }
+\else
+  \setbeamertemplate{footline}{}
+\fi
+
+% -------------------------------------------------------------------------
+% Colors
+% -------------------------------------------------------------------------
+
+\RequirePackage{xcolor}
+
+\if@m@darktext
+  \definecolor{m@text}{HTML}{1A1A1A}
+\else
+  \definecolor{m@text}{HTML}{000000}
+\fi
+
+\definecolor{m@gray}{HTML}{888888}
+\definecolor{m@link}{HTML}{0071E3}  % Apple-style blue for hyperlinks
+
+% Pastel palette for diagrams (matching the screenshot)
+\definecolor{m@blue}{HTML}{ADD8E6}
+\definecolor{m@orange}{HTML}{FFD599}
+\definecolor{m@green}{HTML}{B7DFB9}
+\definecolor{m@purple}{HTML}{C8B4DC}
+\definecolor{m@pink}{HTML}{F2C4C4}
+\definecolor{m@yellow}{HTML}{FFF2B3}
+
+\setbeamercolor{normal text}{fg=m@text, bg=white}
+\setbeamercolor{frametitle}{fg=m@text}
+\setbeamercolor{framesubtitle}{fg=m@text}
+\setbeamercolor{title}{fg=m@text}
+\setbeamercolor{subtitle}{fg=m@gray}
+\setbeamercolor{author}{fg=m@gray}
+\setbeamercolor{date}{fg=m@gray}
+\setbeamercolor{institute}{fg=m@gray}
+\setbeamercolor{footline}{fg=m@gray}
+\setbeamercolor{structure}{fg=m@text}
+
+% Itemize bullets: simple, dark
+\setbeamercolor{item}{fg=m@text}
+\setbeamercolor{subitem}{fg=m@gray}
+
+% Block environments
+\setbeamercolor{block title}{fg=m@text, bg=white}
+\setbeamercolor{block body}{fg=m@text, bg=white}
+
+% Links
+\hypersetup{colorlinks=true, linkcolor=m@text, urlcolor=m@link}
+
+% -------------------------------------------------------------------------
+% Fonts
+% -------------------------------------------------------------------------
+
+\usefonttheme{professionalfonts}
+
+\if@m@systemfont
+  % No fontspec, just use default sans-serif
+\else
+  \RequirePackage[no-math]{fontspec}
+  \if@m@helvetica
+    \setsansfont{Helvetica Neue}[
+      UprightFont    = *,
+      BoldFont       = * Bold,
+      ItalicFont     = * Italic,
+      BoldItalicFont = * Bold Italic,
+    ]
+  \else
+    % Default: Inter
+    \IfFontExistsTF{Inter}{%
+      \setsansfont{Inter}[
+        UprightFont    = * Regular,
+        BoldFont       = * Bold,
+        ItalicFont     = * Italic,
+        BoldItalicFont = * Bold Italic,
+      ]
+    }{%
+      % Fallback if Inter is not installed
+      \PackageWarning{beamerthememinimal}{%
+        Inter font not found. Install it from https://rsms.me/inter/
+        or use the [systemfont] option. Falling back to default sans-serif.%
+      }%
+    }
+  \fi
+\fi
+
+% Title page
+\setbeamerfont{title}{size=\Large, series=\bfseries}
+\setbeamerfont{subtitle}{size=\large, series=\mdseries}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{date}{size=\small}
+\setbeamerfont{institute}{size=\small}
+
+% Frame titles: bold, large
+\setbeamerfont{frametitle}{size=\LARGE, series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\large, series=\bfseries}
+
+% Footline
+\setbeamerfont{footline}{size=\scriptsize}
+
+% -------------------------------------------------------------------------
+% Frame title layout
+% -------------------------------------------------------------------------
+
+\setbeamertemplate{frametitle}{%
+  \vskip0.6em%
+  \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle%
+  \ifx\insertframesubtitle\@empty\else
+    \par\vskip0.2em%
+    \usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle%
+  \fi%
+  \vskip0.4em%
+}
+
+% -------------------------------------------------------------------------
+% Title page layout
+% -------------------------------------------------------------------------
+
+\setbeamertemplate{title page}{%
+  \vfill
+  \begin{flushleft}
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
+    \ifx\insertsubtitle\@empty\else
+      \vskip0.4em%
+      {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+    \fi
+    \vskip1.2em%
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+    \ifx\insertinstitute\@empty\else
+      \vskip0.3em%
+      {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+    \fi
+    \ifx\insertdate\@empty\else
+      \vskip0.3em%
+      {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+    \fi
+  \end{flushleft}
+  \vfill
+}
+
+% -------------------------------------------------------------------------
+% Itemize: clean bullets
+% -------------------------------------------------------------------------
+
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{itemize subsubitem}{\textperiodcentered}
+
+% Generous spacing between items
+\setlength{\leftmargini}{1.2em}
+\setlength{\leftmarginii}{1.2em}
+
+% -------------------------------------------------------------------------
+% Section page (optional, for \sectionpage)
+% -------------------------------------------------------------------------
+
+\setbeamertemplate{section page}{%
+  \vfill
+  \begin{flushleft}
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\insertsection\par}%
+  \end{flushleft}
+  \vfill
+}
+
+% -------------------------------------------------------------------------
+% Geometry: wider margins like Keynote
+% -------------------------------------------------------------------------
+
+\setbeamersize{
+  text margin left=1.5em,
+  text margin right=1.5em,
+}
+
+\endinput
